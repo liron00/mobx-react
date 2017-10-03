@@ -119,7 +119,7 @@ const reactiveMixin = {
          * If props are shallowly modified, react will render anyway,
          * so atom.reportChanged() should not result in yet another re-render
          */
-        let skipRender = false
+        // let skipRender = false
         /**
          * forceUpdate will re-assign this.props. We don't want that to cause a loop,
          * so detect these changes
@@ -139,9 +139,9 @@ const reactiveMixin = {
                 set: function set(v) {
                     if (!isForcingUpdate && isObjectShallowModified(valueHolder, v)) {
                         valueHolder = v
-                        skipRender = true
+                        // skipRender = true
                         atom.reportChanged()
-                        skipRender = false
+                        // skipRender = false
                     } else {
                         valueHolder = v
                     }
@@ -174,7 +174,8 @@ const reactiveMixin = {
                         let hasError = true
                         try {
                             isForcingUpdate = true
-                            if (!skipRender) Component.prototype.forceUpdate.call(this)
+                            Component.prototype.forceUpdate.call(this)
+                            // if (!skipRender) Component.prototype.forceUpdate.call(this)
                             hasError = false
                         } finally {
                             isForcingUpdate = false
@@ -251,15 +252,17 @@ const reactiveMixin = {
                 "[mobx-react] It seems that a re-rendering of a React component is triggered while in static (server-side) mode. Please make sure components are rendered only once server-side."
             )
         }
-        // update on any state changes (as is the default)
-        if (this.state !== nextState) {
-            return true
-        }
-        // update if props are shallowly not equal, inspired by PureRenderMixin
-        // we could return just 'false' here, and avoid the `skipRender` checks etc
-        // however, it is nicer if lifecycle events are triggered like usually,
-        // so we return true here if props are shallowly modified.
-        return isObjectShallowModified(this.props, nextProps)
+
+        return false
+        // // update on any state changes (as is the default)
+        // if (this.state !== nextState) {
+        //     return true
+        // }
+        // // update if props are shallowly not equal, inspired by PureRenderMixin
+        // // we could return just 'false' here, and avoid the `skipRender` checks etc
+        // // however, it is nicer if lifecycle events are triggered like usually,
+        // // so we return true here if props are shallowly modified.
+        // return isObjectShallowModified(this.props, nextProps)
     }
 }
 
