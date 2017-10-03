@@ -1,3 +1,5 @@
+// Liron's reactivity tweak for mobx-react
+
 import { Atom, Reaction, extras } from "mobx"
 import { Component } from "react"
 import { findDOMNode as baseFindDOMNode } from "react-dom"
